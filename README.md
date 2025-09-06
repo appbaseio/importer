@@ -112,6 +112,34 @@ pnpm preview
 - `build` – production build
 - `preview` – preview the production build locally
 
+## Embedding in another React app
+
+You can use the Importer UI as a drop-in React component in your own dashboard or admin app:
+
+1. Install:
+
+```bash
+npm install @appbaseio/importer
+```
+
+2. Import and use in your React app:
+
+```jsx
+import { Importer } from "@appbaseio/importer";
+
+function MyDashboard() {
+  return (
+    <div>
+      {/* ...other dashboard UI... */}
+      <Importer />
+    </div>
+  );
+}
+```
+
+- No props are required (yet). The UI is self-contained.
+- Make sure your app includes Tailwind CSS (or the required styles).
+
 ## License
 
 MIT License
