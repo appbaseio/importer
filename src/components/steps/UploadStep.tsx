@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { useImportStore } from "@/stores/useImportStore";
+import { useImporterConfig } from "@/context/ImporterConfig";
 
 function detectFormat(file: File): "csv" | "json" | "ndjson" {
   const ext = file.name.split(".").pop()?.toLowerCase();
@@ -11,6 +12,7 @@ function detectFormat(file: File): "csv" | "json" | "ndjson" {
 }
 
 export default function UploadStep() {
+  const { sampleDataset } = useImporterConfig();
   const fileRef = useRef<HTMLInputElement>(null);
   const [format, setFormat] = useState<"csv" | "json" | "ndjson">("csv");
   const [previewRows, setPreviewRows] = useState<any[]>([]);
@@ -165,13 +167,12 @@ export default function UploadStep() {
   }
 
   async function loadSample() {
+    if (!sampleDataset?.url) return;
     try {
-      // Resolve the built asset URL for the sample dataset
-      const url = new URL("../../data/moviesData.json", import.meta.url);
-      const resp = await fetch(url.toString());
+      const resp = await fetch(sampleDataset.url);
       const txt = await resp.text();
       const blob = new Blob([txt], { type: "application/json" });
-      const f = new File([blob], "moviesData.json", {
+      const f = new File([blob], sampleDataset.filename || "sample.json", {
         type: "application/json",
       });
       await handleFile(f);
@@ -205,13 +206,15 @@ export default function UploadStep() {
       <div className="grid gap-2">
         <div className="flex items-center justify-between">
           <label className="text-sm font-medium">Source file</label>
-          <button
-            type="button"
-            onClick={loadSample}
-            className="text-xs px-2 py-1 rounded bg-primary text-white hover:bg-primary-light"
-          >
-            Add sample dataset of 18,000 movies
-          </button>
+          {sampleDataset?.url ? (
+            <button
+              type="button"
+              onClick={loadSample}
+              className="text-xs px-2 py-1 rounded bg-primary text-white hover:bg-primary-light"
+            >
+              {sampleDataset.label || "Load sample dataset"}
+            </button>
+          ) : null}
         </div>
         <div
           className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${

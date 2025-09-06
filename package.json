@@ -2,13 +2,32 @@
   "name": "@appbaseio/importer",
   "description": "GUI based data importer for OpenSearch and Elasticsearch clusters. Supports uploading CSV, JSON, and NDJSON files.",
   "public": true,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:lib": "LIB_BUILD=1 vite build && tsc -p tsconfig.build.json",
     "preview": "vite preview"
+  },
+  "main": "dist/data-importer.umd.js",
+  "module": "dist/data-importer.es.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/data-importer.es.js",
+      "require": "./dist/data-importer.umd.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.51.15",
@@ -20,6 +39,10 @@
     "react-json-view": "^1.21.3",
     "zod": "^3.23.8",
     "zustand": "^4.5.2"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",

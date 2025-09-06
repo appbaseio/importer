@@ -45,3 +45,7 @@ logs/
 
 # Misc
 *.local
+
+# App data / samples
+src/data/**
+!src/data/.gitkeep

@@ -112,33 +112,41 @@ pnpm preview
 - `build` – production build
 - `preview` – preview the production build locally
 
-## Embedding in another React app
+## Embedding in your dashboard
 
-You can use the Importer UI as a drop-in React component in your own dashboard or admin app:
-
-1. Install:
+Install the package and render the Importer component in your React app:
 
 ```bash
+pnpm add @appbaseio/importer
+# or
 npm install @appbaseio/importer
 ```
 
-2. Import and use in your React app:
-
-```jsx
+```tsx
 import { Importer } from "@appbaseio/importer";
 
-function MyDashboard() {
+export default function DataImportPage() {
   return (
-    <div>
-      {/* ...other dashboard UI... */}
-      <Importer />
+    <div style={{ padding: 16 }}>
+      <Importer
+        config={{
+          sampleDataset: {
+            url: "/samples/movies.json", // any JSON/NDJSON/JSON array URL
+            label: "Load sample movies",
+            filename: "movies.json",
+          },
+        }}
+      />
     </div>
   );
 }
 ```
 
-- No props are required (yet). The UI is self-contained.
-- Make sure your app includes Tailwind CSS (or the required styles).
+Notes:
+
+- No props are required. You can optionally provide `config.sampleDataset` to show a custom sample button.
+- The package expects React 18+ in your host app (declared as peer dependency).
+- Styles are bundled from the component; if you tree‑shake CSS, ensure component CSS is included.
 
 ## License
 

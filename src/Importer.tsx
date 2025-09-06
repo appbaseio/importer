@@ -1,24 +1,28 @@
-import { Stepper } from "@/components/Stepper";
-import UploadStep from "@/components/steps/UploadStep";
-import TargetClusterStep from "@/components/steps/TargetClusterStep";
-import IndexStep from "@/components/steps/IndexStep";
-import ImportStep from "@/components/steps/ImportStep";
+import React, { useRef } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import App from "./App";
+import {
+  ImporterConfig,
+  ImporterConfigProvider,
+} from "./context/ImporterConfig";
+import "./index.css";
 
-/**
- * Embeddable Importer UI for OpenSearch/Elasticsearch
- * No props required (yet)
- */
-export function Importer() {
-  const steps = [
-    { id: "upload", label: "Upload", element: <UploadStep /> },
-    { id: "cluster", label: "Cluster", element: <TargetClusterStep /> },
-    { id: "index", label: "Ingestion", element: <IndexStep /> },
-    { id: "import", label: "Import", element: <ImportStep /> },
-  ] as const;
+export interface ImporterProps {
+  config?: ImporterConfig;
+}
 
+export function Importer({ config }: ImporterProps) {
+  const qcRef = useRef<QueryClient | null>(null);
+  if (!qcRef.current) qcRef.current = new QueryClient();
   return (
-    <main className="container py-6">
-      <Stepper steps={steps} />
-    </main>
+    <React.StrictMode>
+      <QueryClientProvider client={qcRef.current}>
+        <ImporterConfigProvider value={config || {}}>
+          <App />
+        </ImporterConfigProvider>
+      </QueryClientProvider>
+    </React.StrictMode>
   );
 }
+
+export default Importer;
