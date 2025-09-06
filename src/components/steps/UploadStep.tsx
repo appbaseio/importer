@@ -126,7 +126,7 @@ export default function UploadStep() {
     setFormat(chosen);
     store.setUpload({ file, format: chosen, total: 0 });
     // Start preview parsing
-  const Parser = new ParserWorker();
+    const Parser = new ParserWorker();
     parserRef.current = Parser;
     setLoading(true);
     Parser.onmessage = (e) => {

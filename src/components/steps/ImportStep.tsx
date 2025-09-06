@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useImportStore } from "@/stores/useImportStore";
-import { getRefreshInterval, setRefreshInterval, refreshIndex } from "@/lib/esClient";
+import {
+  getRefreshInterval,
+  setRefreshInterval,
+  refreshIndex,
+} from "@/lib/esClient";
 import ParserWorker from "@/workers/parser.worker?worker&inline";
 import BulkWorker from "@/workers/bulk.worker?worker&inline";
 
@@ -123,8 +127,8 @@ export default function ImportStep() {
     // spin up workers (reuse if already created in this session)
     const existingParser = (store as any).parserWorker as Worker | undefined;
     const existingBulk = (store as any).bulkWorker as Worker | undefined;
-  const Parser = existingParser ?? new ParserWorker();
-  const Bulk = existingBulk ?? new BulkWorker();
+    const Parser = existingParser ?? new ParserWorker();
+    const Bulk = existingBulk ?? new BulkWorker();
     (store as any).setParserWorker?.(Parser);
     (store as any).setBulkWorker?.(Bulk);
     // Only configure Bulk once
