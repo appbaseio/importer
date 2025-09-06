@@ -2,7 +2,7 @@
   "name": "@appbaseio/importer",
   "description": "GUI based data importer for OpenSearch and Elasticsearch clusters. Supports uploading CSV, JSON, and NDJSON files.",
   "public": true,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "module",
   "license": "MIT",
   "scripts": {

@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { useImportStore } from "@/stores/useImportStore";
 import { useImporterConfig } from "@/context/ImporterConfig";
+import ParserWorker from "@/workers/parser.worker?worker&inline";
 
 function detectFormat(file: File): "csv" | "json" | "ndjson" {
   const ext = file.name.split(".").pop()?.toLowerCase();
@@ -125,10 +126,7 @@ export default function UploadStep() {
     setFormat(chosen);
     store.setUpload({ file, format: chosen, total: 0 });
     // Start preview parsing
-    const Parser = new Worker(
-      new URL("../../workers/parser.worker.ts", import.meta.url),
-      { type: "module" }
-    );
+  const Parser = new ParserWorker();
     parserRef.current = Parser;
     setLoading(true);
     Parser.onmessage = (e) => {
